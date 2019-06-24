@@ -14,7 +14,6 @@ class Home extends React.Component {
     console.log(this.props);
 
     this.throttle = 0;
-    this.usersGridRef = React.createRef();
     this.handleLoadMore = this.handleLoadMore.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
