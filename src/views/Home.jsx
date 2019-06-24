@@ -86,7 +86,7 @@ class Home extends React.Component {
     console.log('RENDER');
 
     const { activeUser } = this.state;
-    const { displayUsers } = this.props.appStore;
+    const { displayUsers, page } = this.props.appStore;
 
     return (
       <main className="route route--home">
@@ -97,6 +97,7 @@ class Home extends React.Component {
           handleUserClick={this.handleUserClick}
         />
         {activeUser && <UserDetails user={activeUser} handleCloseDetails={this.handleCloseDetails} />}
+        {page === 20 && <h2 className="text-center">End of users catalog.</h2>}
       </main>
     )
   }
