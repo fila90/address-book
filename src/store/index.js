@@ -17,7 +17,7 @@ const nat = localStorage.getItem('nat') ?
 const state = observable({
   nat,
   loading: true,
-  addBatch: false,
+  addBatch: true,
   search: '',
   page: 0,
   users: [],
