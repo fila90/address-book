@@ -12,7 +12,7 @@ const Settings = lazy(() => import('./views/Settings'))
 export default function AppRouter({ appStore }) {
   return (
     <Router>
-      <Suspense fallback={<div className="main-loader" />}>
+      <Suspense fallback={<div className="split-loader" />}>
         <Route path="/" exact render={(props) => <Home {...props} appStore={appStore} />} />
         <Route path="/settings" render={(props) => <Settings {...props} appStore={appStore} />} />
       </Suspense>

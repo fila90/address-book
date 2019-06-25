@@ -9,13 +9,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.main-loader {
+.split-loader {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: #000000 url('./../img/loading.gif') center no-repeat;
+  background: #ffffff url('./../img/loading.gif') center no-repeat;
   background-size: contain;
 }
 
@@ -57,10 +57,13 @@ body {
 }
 
 // USERS GRID
-.users-grid {
+.users-grid-wrap {
   flex-grow: 1;
-  padding: 1em;
   overflow: auto;
+}
+
+.users-grid {
+  padding: 1em;
   display: grid;
   grid-gap: 1em;
   grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
@@ -103,6 +106,7 @@ body {
   }
 }
 
+// SETTINGS
 .settings-nat-wrap {
   padding: 1em;
   text-align: center;
@@ -174,6 +178,47 @@ body {
 
 .user-info__close-img {
   width: 2em;
+}
+
+// LOADER
+.more-loader {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1em;
+  background-color: rgba(#ffffff, .85);
+  color: #000000;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.more-loader__copy {
+  margin: 0;
+  animation: breathe 1s ease-out infinite normal;
+}
+
+@keyframes breathe {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(.8);
+  }
+
+  60% {
+    transform: scale(1);
+  }
+
+  60% {
+    transform: scale(.8);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 // HELPERS

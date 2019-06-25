@@ -3,6 +3,7 @@ import { observer } from "mobx-react"
 import MainHeader from './../components/MainHeader'
 import UsersGrid from './../components/UsersGrid'
 import UserDetails from './../components/UserDetails'
+import MoreLoader from './../components/MoreLoader'
 
 class Home extends React.Component {
   constructor(props) {
@@ -11,10 +12,8 @@ class Home extends React.Component {
     this.state = {
       activeUser: null
     }
-    console.log(this.props);
 
     this.throttle = 0;
-    this.handleLoadMore = this.handleLoadMore.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
     this.handleUserClick = this.handleUserClick.bind(this)
@@ -40,12 +39,6 @@ class Home extends React.Component {
     clearTimeout(this.throttle)
   }
 
-  handleLoadMore() {
-    this
-      .props.appStore.getUsers()
-      .then(res => this.props.appStore.setUsers())
-  }
-
   handleSearch(e) {
     const search = e.target.value.toLowerCase();
     clearTimeout(this.throttle)
@@ -67,26 +60,35 @@ class Home extends React.Component {
   }
 
   handleScroll(e) {
-    const { fetchingBatch, nextBatch } = this.props.appStore;
+    const { appStore } = this.props;
     const { clientHeight, scrollHeight, scrollTop } = e.target;
     const tillEnd = Math.abs(clientHeight - (scrollHeight - scrollTop));
 
-    if (tillEnd < 800 && !fetchingBatch && !nextBatch.length) {
-      console.log('end');
-      this.props.appStore.getUsers();
+    // don't even bother, we have it all
+    if (appStore.users.length === 1000) return
+    if (tillEnd < 800 && !appStore.loading && !appStore.nextBatch.length) {
+      console.log('START FETCH');
+      appStore
+        .getUsers()
+        .then(_ => {
+          console.log('LOADED');
+
+          if (appStore.addBatch) appStore.setUsers();
+        })
     }
 
-    if (tillEnd === 0 && nextBatch.length) {
-      console.log('set');
-      this.props.appStore.setUsers();
+    if (tillEnd === 0) {
+      console.log('SCROLL END');
+      if (appStore.nextBatch.length) appStore.setUsers();
+      else appStore.setAddBatch(true);
     }
   }
 
   render() {
-    console.log('RENDER');
+    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 
     const { activeUser } = this.state;
-    const { displayUsers, page } = this.props.appStore;
+    const { displayUsers, loading, addBatch } = this.props.appStore;
 
     return (
       <main className="route route--home">
@@ -97,7 +99,7 @@ class Home extends React.Component {
           handleUserClick={this.handleUserClick}
         />
         {activeUser && <UserDetails user={activeUser} handleCloseDetails={this.handleCloseDetails} />}
-        {page === 20 && <h2 className="text-center">End of users catalog.</h2>}
+        {loading && addBatch && <MoreLoader />}
       </main>
     )
   }

@@ -17,7 +17,7 @@ const nat = localStorage.getItem('nat') ?
 const state = observable({
   nat,
   loading: true,
-  fetchingBatch: false,
+  addBatch: false,
   search: '',
   page: 0,
   users: [],
@@ -40,7 +40,7 @@ const state = observable({
     const page = this.incremetPage();
     if(!page) return;
 
-    this.fetchingBatch = true;
+    this.loading = true;
     const nat = this.nat.join(',')
     const res = yield fetchUsers(this.page, nat)
     const users = res.results.map(u => {
@@ -48,10 +48,9 @@ const state = observable({
       delete u.login
       return u
     })
-    console.log(users);
 
     this.nextBatch = [...users]
-    this.fetchingBatch = false;
+    this.loading = false;
     return users
   }),
   /**
@@ -72,9 +71,17 @@ const state = observable({
       ...this.nextBatch
     ]
     this.nextBatch = []
+    this.addBatch = false
   }),
   setSearch: action(function (search) {
     this.search = search;
+  }),
+  /**
+   * @desc toggle addBatch flag
+   * @param {Boolean} add
+   */
+  setAddBatch: action(function(add) {
+    this.addBatch = add
   }),
   /**
    * @desc toggle nationalities filter and store in localStorage
