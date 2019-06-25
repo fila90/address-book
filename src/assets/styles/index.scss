@@ -142,7 +142,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba($color: #000000, $alpha: .85);
+  background-color: rgba($color: #000000, $alpha: 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,7 +157,7 @@ body {
 }
 
 .user-info__copy {
-  margin: 0 0 .5em 0;
+  margin: 0 0 .5em;
   text-transform: capitalize;
 
   &:last-child {
@@ -187,7 +187,7 @@ body {
   left: 0;
   right: 0;
   padding: 1em;
-  background-color: rgba(#ffffff, .85);
+  background-color: rgba(#ffffff, 0.85);
   color: #000000;
   text-align: center;
   font-weight: bold;
@@ -205,7 +205,7 @@ body {
   }
 
   25% {
-    transform: scale(.8);
+    transform: scale(0.8);
   }
 
   60% {
@@ -213,7 +213,7 @@ body {
   }
 
   60% {
-    transform: scale(.8);
+    transform: scale(0.8);
   }
 
   100% {
