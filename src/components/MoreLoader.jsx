@@ -1,9 +1,11 @@
 import React from "react";
 
-export default function MoreLoader() {
+const MoreLoader = () => {
   return (
     <div className="more-loader">
       <p className="more-loader__copy">loading . . .</p>
     </div>
   )
 }
+
+export default MoreLoader

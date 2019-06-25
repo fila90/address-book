@@ -20,25 +20,35 @@ class Home extends React.Component {
     this.handleCloseDetails = this.handleCloseDetails.bind(this)
   }
 
+  /**
+   * @desc fetch users if there aren't any
+   */
   componentDidMount() {
-    const { users } = this.props.appStore;
+    const { appStore } = this.props;
 
-    // for first render and when coming back from settings
-    // if nothing changed in settings, don't fetch users
-    if (!users.length) {
-      this.props.appStore
+    if (!appStore.users.length) {
+      appStore
         .getUsers()
-        .then(res => {
-          this.props.appStore.setUsers()
+        .then(_ => {
+          appStore.setUsers()
         })
     }
   }
 
+  /**
+   * @desc clear search when leaving Home
+   * clear search timeout so we don't update unmounted component
+   */
   componentWillUnmount() {
     this.props.appStore.setSearch('')
     clearTimeout(this.throttle)
   }
 
+  /**
+   * @desc make search case insensitive
+   * throttle the action so we don't filter users too often
+   * @param {Object} e
+   */
   handleSearch(e) {
     const search = e.target.value.toLowerCase();
     clearTimeout(this.throttle)
@@ -47,18 +57,31 @@ class Home extends React.Component {
     }, 250);
   }
 
+  /**
+   * @desc set active user and show modal
+   * @param {Object} user
+   */
   handleUserClick(user) {
     this.setState({
       activeUser: user
     })
   }
 
+  /**
+   * @desc remove active user/close modal
+   */
   handleCloseDetails() {
     this.setState({
       activeUser: null
     })
   }
 
+  /**
+   * @desc witchcraft to handle preloading and adding new users
+   * a bit tricky one because with bad internet connection we
+   * could be at the bottom of the list and still fetching users
+   * @param {Object} e
+   */
   handleScroll(e) {
     const { appStore } = this.props;
     const { clientHeight, scrollHeight, scrollTop } = e.target;
@@ -66,27 +89,27 @@ class Home extends React.Component {
 
     // don't even bother, we have it all
     if (appStore.users.length === 1000) return
+
+    // we're 800px from bottom of users list, go and fetch new users if we're not already fetching/fetched
     if (tillEnd < 800 && !appStore.loading && !appStore.nextBatch.length) {
-      console.log('START FETCH');
       appStore
         .getUsers()
         .then(_ => {
-          console.log('LOADED');
-
+          // data is fetched, if we reached bottom of list, add users right away
           if (appStore.addBatch) appStore.setUsers();
         })
     }
 
+    // we're at the bottom of users list
+    // if we've already fetched users show them
+    // else add flag for adding users as soon as request completes
     if (tillEnd === 0) {
-      console.log('SCROLL END');
       if (appStore.nextBatch.length) appStore.setUsers();
       else appStore.setAddBatch(true);
     }
   }
 
   render() {
-    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-
     const { activeUser } = this.state;
     const { displayUsers, loading, addBatch } = this.props.appStore;
 
@@ -98,8 +121,8 @@ class Home extends React.Component {
           handleScroll={this.handleScroll}
           handleUserClick={this.handleUserClick}
         />
-        {activeUser && <UserDetails user={activeUser} handleCloseDetails={this.handleCloseDetails} />}
         {loading && addBatch && <MoreLoader />}
+        {activeUser && <UserDetails user={activeUser} handleCloseDetails={this.handleCloseDetails} />}
       </main>
     )
   }

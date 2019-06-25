@@ -3,11 +3,16 @@ import { observer } from "mobx-react"
 import { Link } from "react-router-dom"
 import SettingsNat from './../components/SettingsNat'
 
-function Settings({ appStore }) {
-  const nationalities = ['CH', 'ES', 'FR', 'GB']
+const Settings = ({ appStore }) => {
+  const nationalities = ['CH', 'ES', 'FR', 'GB'];
+
+  /**
+   * @desc take value from checkbox change event and pass it to toggle function
+   * @param {Object} e
+   */
   const handleNatChange = (e) => {
     const nat = e.target.value;
-    appStore.toggleNat(nat)
+    appStore.toggleNat(nat);
   }
 
   return (

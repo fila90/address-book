@@ -6,7 +6,6 @@ const Settings = lazy(() => import('./views/Settings'))
 
 /**
  * @desc application router
- * fetch first set of users as soon as possible
  * @param {Object} appStore
  */
 export default function AppRouter({ appStore }) {
