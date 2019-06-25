@@ -40,18 +40,22 @@ const state = observable({
     const page = this.incremetPage();
     if (!page) return;
 
-    this.loading = true;
-    const nat = this.nat.join(',');
-    const res = yield fetchUsers(this.page, nat)
-    const users = res.results.map(u => {
-      u.name.username = u.login.username;
-      delete u.login;
-      return u;
-    })
+    try {
+      this.loading = true;
+      const nat = this.nat.join(',');
+      const res = yield fetchUsers(this.page, nat)
+      const users = res.results.map(u => {
+        u.name.username = u.login.username;
+        delete u.login;
+        return u;
+      })
 
-    this.nextBatch = [...users];
-    this.loading = false;
-    return users;
+      this.nextBatch = [...users];
+      this.loading = false;
+      return users;
+    } catch (err) {
+      this.loading = false;
+    }
   }),
   /**
    * @desc 20 is max page for 1000 users

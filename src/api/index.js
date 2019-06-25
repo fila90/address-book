@@ -1,4 +1,4 @@
-const BASE_URL = 'https://randomuser.me/api/?inc=name,location,phone,cell,email,login,picture&seed=addressbook&results=50';
+const BASE_URL = 'https://randomuser.me/api/?inc=name,location,phone,cell,email,login,picture&seed=addressbook&results=50&noinfo';
 
 /**
  * @desc get users from API
