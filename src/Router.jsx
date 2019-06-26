@@ -8,7 +8,7 @@ const Settings = lazy(() => import('./views/Settings'))
  * @desc application router
  * @param {Object} appStore
  */
-export default function AppRouter({ appStore }) {
+const AppRouter = ({ appStore }) => {
   return (
     <Router>
       <Suspense fallback={<div className="split-loader" />}>
@@ -18,3 +18,5 @@ export default function AppRouter({ appStore }) {
     </Router>
   )
 }
+
+export default AppRouter
